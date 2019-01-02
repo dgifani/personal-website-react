@@ -1,0 +1,18 @@
+image: node:10.14.0
+clone:
+  depth: full
+pipelines:
+  default:
+    - step:
+        name: Test
+        script:
+         - npm install
+         - npm test
+         - git push url.git HEAD:master
+     - step:
+        deployment: test
+        trigger: manual
+        image: atlassian/default-image:2
+        script:
+         - ssh -t dev@serverIP  "sh /home/dev/deploy.sh"
+
